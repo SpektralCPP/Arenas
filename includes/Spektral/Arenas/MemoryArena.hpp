@@ -22,12 +22,13 @@ public:
 
   /**
    * @brief Constructs a MemoryArena with a given size.
-   * @param size The total size of the memory arena in bytes.
+   * @param size The total size of the memory arena in bytes. 4096 by default
+   * since that can hold 1024 ints(arbitrary requirement choosen by me).
    *
    * Allocates a contiguous block of memory of the specified size. Throws
    * std::bad_alloc if allocation fails.
    */
-  MemoryArena(size_t size) : size_(size), current_offset_(0) {
+  MemoryArena(size_t size = 4096) : size_(size), current_offset_(0) {
     data = static_cast<char *>(malloc(size));
     if (!data)
       throw std::bad_alloc();
