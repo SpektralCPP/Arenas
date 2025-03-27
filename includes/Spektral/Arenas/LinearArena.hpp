@@ -6,29 +6,29 @@
 namespace Spektral::Arenas {
 
 /**
- * @class MemoryArena
+ * @class LinearArena
  * @brief A simple memory arena for fast memory allocations.
  *
  * This class provides a linear allocator that allocates memory in a contiguous
  * block. It does not support deallocation of individual allocations but allows
  * resetting the entire arena.
  */
-class MemoryArena {
+class LinearArena {
 public:
   /**
    * @brief Deleted default constructor.
    */
-  MemoryArena() = delete;
+  LinearArena() = delete;
 
   /**
-   * @brief Constructs a MemoryArena with a given size.
+   * @brief Constructs a LinearArena with a given size.
    * @param size The total size of the memory arena in bytes. 4096 by default
    * since that can hold 1024 ints(arbitrary requirement choosen by me).
    *
    * Allocates a contiguous block of memory of the specified size. Throws
    * std::bad_alloc if allocation fails.
    */
-  MemoryArena(size_t size = 4096) : size_(size), current_offset_(0) {
+  LinearArena(size_t size = 4096) : size_(size), current_offset_(0) {
     data = static_cast<char *>(malloc(size));
     if (!data)
       throw std::bad_alloc();
@@ -37,7 +37,7 @@ public:
   /**
    * @brief Destructor that frees the allocated memory.
    */
-  ~MemoryArena() { free(data); }
+  ~LinearArena() { free(data); }
 
   /**
    * @brief Allocates a block of memory from the arena.
