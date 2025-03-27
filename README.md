@@ -34,3 +34,24 @@ A simple memory allocation framework to batch allocate/deallocate.
     ```cpp
     arena.reset();
     ```
+
+## Benchmark Results
+Benchmark availabe [here](tests/perf/main.cpp)
+
+```
+-----------------------------------------------------------------------------------------------
+Benchmark                                                     Time             CPU   Iterations
+-----------------------------------------------------------------------------------------------
+malloc_test/iterations:10000/repeats:50_mean             755951 ns       742367 ns           50
+malloc_test/iterations:10000/repeats:50_median           749422 ns       736097 ns           50
+malloc_test/iterations:10000/repeats:50_stddev            49129 ns        48088 ns           50
+malloc_test/iterations:10000/repeats:50_cv                 6.50 %          6.48 %            50
+linear_alloc_test/iterations:10000/repeats:50_mean       661096 ns       649307 ns           50
+linear_alloc_test/iterations:10000/repeats:50_median     640215 ns       628759 ns           50
+linear_alloc_test/iterations:10000/repeats:50_stddev      96940 ns        95213 ns           50
+linear_alloc_test/iterations:10000/repeats:50_cv          14.66 %         14.66 %            50
+```
+### Machine Details
+- CPU: Intel Core i9 14900HX
+- RAM: 32 GB @ 5600 MT/s
+- OS: WSL
