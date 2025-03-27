@@ -1,8 +1,8 @@
 all: install
 
-install: /usr/include/Spektral/Arenas/MemoryArena.hpp
+install: /usr/include/Spektral/Arenas/LinearArena.hpp
 
-/usr/include/Spektral/Arenas/MemoryArena.hpp: includes/Spektral/Arenas/MemoryArena.hpp
+/usr/include/Spektral/Arenas/LinearArena.hpp: includes/Spektral/Arenas/LinearArena.hpp
 	@echo "Installing header at $@"
 	@sudo mkdir -p /usr/include/Spektral/Arenas/
 	@sudo cp $^ $@
