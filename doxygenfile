@@ -18,3 +18,5 @@ PREDEFINED              =
 INCLUDE_PATH            = includes
 ALWAYS_DETAILED_SEC     = YES
 HTML_COLORSTYLE         = LIGHT
+SOURCE_BROWSER          = NO
+VERBATIM_HEADERS        = NO
