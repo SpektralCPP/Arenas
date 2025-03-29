@@ -58,8 +58,11 @@ public:
    *
    * Allocates memory from the arena in a linear fashion. If there is not enough
    * space left, it returns nullptr.
+   *
+   * @note this function is defined as inline because for small allocations, the
+   * function call overhead is comporable to the offset incrementation overhead
    */
-  void *alloc(size_t size) {
+  inline void *alloc(size_t size) {
     if (current_offset_ + size > size_)
       return nullptr;
     void *ptr = data + current_offset_;
@@ -71,10 +74,33 @@ public:
    * @brief Allocates memory for an array of objects of type T.
    * @tparam T The type of object to allocate.
    * @param count The number of objects to allocate.
+   * @param align Define wether the block should be aligned. True by default.
    * @return A pointer to the allocated memory, or nullptr if out of memory.
+   *
+   * @note The pointer will be aligned by default, for optimization. If you'd
+   * like to disable this, call with alloc<T>(count, false);
    */
-  template <typename T> T *alloc(size_t count) {
-    return static_cast<T *>(alloc(sizeof(T) * count));
+  template <typename T> T *alloc(size_t count, bool align = true) {
+    size_t remainder;
+    size_t alignment = alignof(T);
+    size_t required_size = sizeof(T);
+    // if the user doesn't want alignment or the data is already aligned
+    // don't align
+    if (!align || !(remainder = (current_offset_ % alignment)))
+      return static_cast<T *>(alloc(required_size * count));
+    // This is different from the standard padding formula:
+    // padding = (alignment - (current_offset_ % alignment)) % alignment;
+    // because we've already checked for the block being aligned in the first
+    // gaurd block.
+    size_t padding = alignment - remainder;
+
+    if (current_offset_ + padding + required_size > size_)
+      return nullptr;
+
+    current_offset_ += padding;
+    T *ptr = static_cast<T *>(data + current_offset_);
+    current_offset_ += required_size;
+    return ptr;
   }
 
   /**
