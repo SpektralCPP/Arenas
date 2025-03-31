@@ -12,10 +12,15 @@ docs: doxygenfile includes/Spektral/Arenas/*.hpp
 	@doxygen $<
 
 tests: build/bencharmks build/functionality
+benchmark: build/benchmarks
+clean:
+	@echo "Cleaning"
+	@rm -rf build/
+	@rm -rf docs/
 
-build/bencharmks: tests/perf/main.cpp
-	@echo "Compiling Bencharmks @ $@"
+build/benchmarks: tests/perf/main.cpp
+	@echo "Compiling Benchmarks @ $@"
 	@mkdir -p build/
 	@g++ $^ -o $@ -lbenchmark -O3 --std=c++23
 
-.PHONY: install
+.PHONY: install clean benchmark
